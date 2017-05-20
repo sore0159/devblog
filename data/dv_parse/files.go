@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	dvp "mule/devblog/dv_parse"
+	dv "mule/devblog/data"
 	"os"
 	"path"
 )
@@ -16,11 +16,11 @@ const (
 var MISSING_INDEX = errors.New("missing index")
 
 // This should overwrite any previous files that have changed!
-func CreateFiles(index *dvp.Index, data []*dvp.Data) error {
+func CreateFiles(index *dv.Index, data []*dv.Data) error {
 	create := func(n string) (*os.File, error) {
 		return os.Create(path.Join(PARSED_DIR, n))
 	}
-	f, err := create(dvp.INDEX_NAME)
+	f, err := create(dv.INDEX_NAME)
 	if err != nil {
 		return err
 	}
@@ -43,24 +43,24 @@ func CreateFiles(index *dvp.Index, data []*dvp.Data) error {
 	return nil
 }
 
-func GetExisting() (*dvp.Index, []*dvp.Data, error) {
+func GetExisting() (*dv.Index, []*dv.Data, error) {
 	files, err := ioutil.ReadDir(PARSED_DIR)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to read dir: %v", err)
 	}
-	data := make([]*dvp.Data, 0, len(files))
-	var index *dvp.Index
+	data := make([]*dv.Data, 0, len(files))
+	var index *dv.Index
 	for _, fD := range files {
 		fName := fD.Name()
 		f, err := os.Open(path.Join(PARSED_DIR, fName))
 		if err != nil {
 			return nil, nil, fmt.Errorf("failed to open file %s: %s", fD.Name(), err)
 		}
-		if fName == dvp.INDEX_NAME {
-			index, err = dvp.IndexFromReader(f)
+		if fName == dv.INDEX_NAME {
+			index, err = dv.IndexFromReader(f)
 		} else {
-			var d *dvp.Data
-			d, err = dvp.DataFromReader(f)
+			var d *dv.Data
+			d, err = dv.DataFromReader(f)
 			data = append(data, d)
 		}
 		f.Close()

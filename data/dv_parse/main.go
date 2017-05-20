@@ -15,7 +15,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	dvp "mule/devblog/dv_parse"
+	dv "mule/devblog/data"
 	"os"
 	"path"
 )
@@ -38,7 +38,7 @@ func main() {
 			fNames = append(fNames, test)
 		}
 	}
-	index, err := dvp.GetIndex(PARSED_DIR)
+	index, err := dv.GetIndex(PARSED_DIR)
 	if err != nil {
 		fmt.Println("Error getting index: ", err)
 		return
@@ -46,9 +46,9 @@ func main() {
 	if len(*index) == 0 {
 		fmt.Println("Empty index fetched: creating new!")
 	}
-	data := make([]*dvp.Data, 0, len(fNames))
+	data := make([]*dv.Data, 0, len(fNames))
 	handle := func(fName string) error {
-		d, err := dvp.Parse(fName)
+		d, err := dv.Parse(fName)
 		if err != nil {
 			return err
 		}
