@@ -1,4 +1,18 @@
-package main
+package dv_parse
+
+import "time"
+
+type IndexData struct {
+	FileName  string
+	UID       uint64
+	Submitted time.Time
+	Tags      []string
+}
+
+type Data struct {
+	IndexData
+	Content []byte
+}
 
 type Index []*IndexData
 

@@ -1,4 +1,4 @@
-package main
+package dv_parse
 
 // First Google result for 'golang markdown parser'
 // Selling points:

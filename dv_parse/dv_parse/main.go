@@ -15,22 +15,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	dvp "mule/devblog/dv_parse"
 	"os"
 	"path"
-	"time"
 )
-
-type IndexData struct {
-	FileName  string
-	UID       uint64
-	Submitted time.Time
-	Tags      []string
-}
-
-type Data struct {
-	IndexData
-	Content []byte
-}
 
 func main() {
 	if len(os.Args) < 2 {
@@ -50,7 +38,7 @@ func main() {
 			fNames = append(fNames, test)
 		}
 	}
-	index, err := GetIndex()
+	index, err := dvp.GetIndex(PARSED_DIR)
 	if err != nil {
 		fmt.Println("Error getting index: ", err)
 		return
@@ -58,9 +46,9 @@ func main() {
 	if len(*index) == 0 {
 		fmt.Println("Empty index fetched: creating new!")
 	}
-	data := make([]*Data, 0, len(fNames))
+	data := make([]*dvp.Data, 0, len(fNames))
 	handle := func(fName string) error {
-		d, err := Parse(fName)
+		d, err := dvp.Parse(fName)
 		if err != nil {
 			return err
 		}

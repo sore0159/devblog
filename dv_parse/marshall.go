@@ -1,4 +1,4 @@
-package main
+package dv_parse
 
 // I want fast reading from files for the server eventually
 // I thought initially it could just be totally preformatted and
