@@ -20,10 +20,9 @@ func Parse(fileName string) (*Data, error) {
 	if err != nil {
 		return nil, err
 	}
-	d := &Data{
-		FileName:  path.Base(fileName),
-		Submitted: time.Now(),
-	}
+	d := new(Data)
+	d.FileName = path.Base(fileName)
+	d.Submitted = time.Now()
 	if bytes.HasPrefix(unparsed, TAGS_PREFIX) {
 		var tagLine []byte
 		split := bytes.SplitN(unparsed, TAGS_END, 2)
@@ -31,12 +30,13 @@ func Parse(fileName string) (*Data, error) {
 			return nil, fmt.Errorf("Tags split returned %d subslices, need >1", len(split))
 		}
 		tagLine, unparsed = split[0], split[1]
-		d.Tags = strings.Split(string(tagLine), TAGS_SPLIT)
+		tagLine = bytes.TrimPrefix(tagLine, TAGS_PREFIX)
+		d.Tags = strings.Split(string(tagLine), TAGS_SPLIT)[0:]
 		for i, str := range d.Tags {
 			d.Tags[i] = strings.TrimSpace(str)
 		}
 	}
 	d.Content = ParseMarkdown(unparsed)
-	// TODO: Assign uniqie and non-conflicting UID
+	// UID assigned when added to Index
 	return d, nil
 }
