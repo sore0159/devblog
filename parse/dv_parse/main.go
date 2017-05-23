@@ -15,40 +15,42 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	dv "mule/devblog/data"
+	"mule/devblog/parse"
 	"os"
 	"path"
 )
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: ", os.Args[0], "[-f] INPUTFILE [MOREFILES...]\n",
+		fmt.Println("Usage: ", os.Args[0], "[-f][-k][-n] INPUTFILE [MOREFILES...]\n",
 			os.Args[0], " -h will print help")
 		return
 	}
 	fNames := make([]string, 0, len(os.Args)-1)
-	var forceFlag bool
+	var keepFlag, forceFlag bool
 	for _, test := range os.Args[1:] {
-		if test == "-f" {
-			forceFlag = true
-		} else if test == "-h" {
+		if test == "-h" {
 			PrintHelp()
 			return
+		} else if test == "-f" {
+			forceFlag = true
+		} else if test == "-k" {
+			keepFlag = true
+		} else if test == "-n" {
+			fNames = nil
+			break
 		} else {
 			fNames = append(fNames, test)
 		}
 	}
-	index, err := dv.GetIndex(PARSED_DIR)
+	index, data, err := GetExisting()
 	if err != nil {
-		fmt.Println("Error getting index: ", err)
+		fmt.Printf("Error loading existing data: %s\n", err)
 		return
 	}
-	if len(*index) == 0 {
-		fmt.Println("Empty index fetched: creating new!")
-	}
-	data := make([]*dv.Data, 0, len(fNames))
+	newData := make([]*parse.ParsedFile, 0, len(fNames))
 	handle := func(fName string) error {
-		d, err := dv.Parse(fName)
+		d, err := parse.ParseFromFile(fName)
 		if err != nil {
 			return err
 		}
@@ -58,13 +60,14 @@ func main() {
 					fmt.Printf("Duplicate filename %s found, -f flag forceing addition)\n", fName)
 					break
 				} else {
-					fmt.Printf("Duplicate filename %s found, skipping (use -f to force)\n", fName)
+					fmt.Printf("Duplicate filename %s found, skipping (use -f to force)\n", d.FileName)
 					return nil
 				}
 			}
 		}
-		index.AddData(d)
+		index.AddData(&(d.IndexData))
 		data = append(data, d)
+		newData = append(newData, d)
 		return nil
 	}
 	for _, fName := range fNames {
@@ -94,17 +97,34 @@ func main() {
 		fmt.Println("No data parsed!")
 		return
 	}
-	fmt.Printf("Data parsed: adding %d new posts and updating index\n", len(data))
-	if err := CreateFiles(index, data); err != nil {
-		fmt.Println("Error creatiing files: ", err)
+	if len(fNames) == 0 {
+		fmt.Printf("Data parsed: updating index\n")
+	} else {
+		fmt.Printf("Data parsed: adding %d new posts and updating index\n", len(newData))
+	}
+	if err := CreateFiles(index, newData); err != nil {
+		fmt.Println("Error creating files: ", err)
 		return
 	}
 	fmt.Println("File creation complete!")
+	if keepFlag {
+		return
+	}
+	for _, fN := range fNames {
+		err := os.Rename(fN, fN+".parsed")
+		if err != nil {
+			fmt.Printf("Error moving parsed files: %s\n", err)
+			return
+		}
+	}
 }
 
 func PrintHelp() {
-	fmt.Println("Usage: ", os.Args[0], "[-h][-f] INPUTFILE [MOREFILES...]\n",
-		"Printing this help message with the -h flag will cause no further actions to be run\n",
+	fmt.Println("Usage: ", os.Args[0], "[-h][-f][-k] INPUTFILE [MOREFILES...]\n",
+		os.Args[0]+" is a program to parse new devblog files and add them to an existing collection of blogs.  New, parsed (but not templated) files will be created in the directory '"+PARSED_DIR+"'\n",
+		"Printing this help message with the -h flag will cause no actions to be run\n",
 		"Any number of file names can be added at once, any directory will havi it's contents added (not recursively)\n",
-		"Any file whose name is found in the existing index will be skipped unless the -f flag is present")
+		"Any file whose name is found in the existing index will be skipped unless the -f flag is present\n",
+		"If the -k flag is present, parsed files will remain untouched, otherwise they will be have '.parsed' appended to their name.",
+	)
 }
