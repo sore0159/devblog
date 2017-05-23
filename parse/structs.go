@@ -1,8 +1,8 @@
 package parse
 
-import "mule/devblog"
+import "mule/devblog/route"
 
 type ParsedFile struct {
-	devblog.IndexData
+	route.IndexData
 	Content []byte
 }

@@ -1,4 +1,4 @@
-package devblog
+package route
 
 import (
 	"fmt"

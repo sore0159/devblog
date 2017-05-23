@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"mule/devblog"
 	"mule/devblog/parse"
+	"mule/devblog/route"
 	"testing"
 )
 
@@ -22,7 +22,7 @@ func TestTwo(t *testing.T) {
 	for _, d := range data {
 		log.Printf("%+v", d)
 	}
-	oldIndex, err := devblog.GetIndex(PARSED_DIR)
+	oldIndex, err := route.GetIndex(PARSED_DIR)
 	if err != nil {
 		log.Println("Get index error: ", err)
 		return
@@ -52,7 +52,7 @@ func TestThree(t *testing.T) {
 		return
 	}
 	log.Printf("Name Parsed %s, %s\n", d2.FileName, d2.Submitted)
-	index := devblog.NewIndex()
+	index := route.NewIndex()
 	err = index.AddData(&(d2.IndexData))
 	if err != nil {
 		log.Println("Error adding to index: ", err)

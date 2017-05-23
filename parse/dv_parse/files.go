@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"mule/devblog"
 	"mule/devblog/parse"
+	"mule/devblog/route"
 	"path/filepath"
 )
 
@@ -13,8 +13,8 @@ const (
 )
 
 // This should overwrite any previous files that have changed!
-func CreateFiles(index *devblog.Index, data []*parse.ParsedFile) error {
-	err := devblog.MakeIndex(PARSED_DIR, index)
+func CreateFiles(index *route.Index, data []*parse.ParsedFile) error {
+	err := route.MakeIndex(PARSED_DIR, index)
 	if err != nil {
 		return err
 	}
@@ -27,15 +27,15 @@ func CreateFiles(index *devblog.Index, data []*parse.ParsedFile) error {
 	return nil
 }
 
-func GetExisting() (*devblog.Index, []*parse.ParsedFile, error) {
+func GetExisting() (*route.Index, []*parse.ParsedFile, error) {
 	files, err := ioutil.ReadDir(PARSED_DIR)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to read dir: %v", err)
 	}
 	data := make([]*parse.ParsedFile, 0, len(files))
-	index := devblog.NewIndex()
+	index := route.NewIndex()
 	for _, fD := range files {
-		if fD.Name() == devblog.INDEX_NAME {
+		if fD.Name() == route.INDEX_NAME {
 			continue
 		}
 		fName := filepath.Join(PARSED_DIR, fD.Name())
