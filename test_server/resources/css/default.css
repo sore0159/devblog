@@ -1,0 +1,33 @@
+body {
+        padding: 0px;
+        margin: 0px;
+        background-color: #ffffff;
+        font-family: "Courier New", Courier, Monospace;
+        color: #000020;
+}
+div {
+        padding: 0px; margin: 0px;
+}
+a.clean {
+        text-decoration: none;
+}
+a       {
+        color: #0000ff;
+}
+input {
+        background-color: #ffffff;
+        color: #0000ff;
+        border: 1px solid #0000ff;
+        border-radius: 5px;
+        font-size: 1em;
+        font-family: "Courier New", Courier, Monospace;
+        margin: 0;
+}
+
+form.noblock {
+        display:inline;
+}
+div.clearer {
+        clear:both;
+}
+

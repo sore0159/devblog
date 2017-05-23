@@ -1,4 +1,4 @@
-package data
+package format
 
 // First Google result for 'golang markdown parser'
 // Selling points:

@@ -1,0 +1,19 @@
+{{ define "frame" }}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{{ template "title" . }}</title>
+<link rel="stylesheet" href="/css/{{ template "css" . }}.css">
+<link rel="shortcut icon" href="/img/yd32.ico">
+</head>
+<body>
+{{ template "body" . }}
+</body>
+</html>
+{{ end }}
+
+
+{{ define "css" }}default{{ end }}
+{{ define "title" }}Code Portfolio: Eric Sorell{{ end }}
+{{ define "body" }}Default Body{{ end }}
