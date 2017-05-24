@@ -89,6 +89,8 @@ func ServeOne(name, cType string) func(http.ResponseWriter, *http.Request) {
 		f.Close()
 	}
 }
+
+// ServeOnly wraps a http.HandlerFunc with a redirect to exactly one path
 func ServeOnly(route string, f func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != route {

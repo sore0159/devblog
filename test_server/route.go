@@ -26,6 +26,7 @@ var (
 )
 
 func FindHTML(r *http.Request) (filePath string, err error) {
+	return filepath.Join(PAGES_DIR, path.Base(r.URL.Path)+".html"), nil
 	return filepath.Join(PAGES_DIR, "test.html"), nil
 	return "", NOT_FOUND
 }

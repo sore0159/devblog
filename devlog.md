@@ -1,3 +1,14 @@
+2017 05 23
+
+Began constructing the format library, getting templates into place, and then building a server to test the resulting templated files ended up becoming serious work on the server architecture that will be in the final server.
+
+Project decisions made here are mostly regarding the structure of serving files, which will likely be changed for whatever form the final server takes on external hosting.  Some delves into go's net/http library's source code to see details on how it serves files led to a simple io.Copy approach for now.
+
+The heavy lifting of request routing is not something I want to build myself, having read enough of the subject to respect it's depth.  My routing will be handling UID -> file, or "first/prev/next/last"-> UID -> file.
+
+Current plan is for filter to be stored in a cookie.  No encryption needed since no secure data is involved, and a static javascript file can handle complicated UI for manipulating the filter.
+
+
 2017 05 22
 
 Parsing now reads user-generated files and creates files and data parsed and ready for the templating step.  Data will be passed directly to a templater for html file generation, but parsed .md files are important to preserve the assignment of UID and submission timestamps while retaining the ability for the user to edit/review his old posts, or re-template them after changing the websites template.
