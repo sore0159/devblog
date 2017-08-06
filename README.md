@@ -1,18 +1,21 @@
-## Pure static site generation for github pages.
+### Static site generation for github pages.
 
-File Name: post_title.md
-File First Line (optional): TAGS: Comma separated, Case Sensitive
-File Contents: Markdown content 
+### Commands
+```go
+dv FILENAME [...]
+dv g[en[erate]] [DIRECTORY]
+```
 
-## Commands
-dv publish post_title.md [...]
-dv generate [directory]
+### Publish
+When dv is called with a list of filenames, those files are renamed to prefix a timestamp to their name.
 
-## Publish
-Renames files to prepend TIME\_ to the filename.
+### Generate
+* Searches for the given directory, uses "." if none specified
+* Attempts to parse all files in this directory
+* * Files must be named TIME\_title\_post.md
+* * If the first line of the file begins with "TAGS: ", the rest of the line will be parsed as a comma separated list of tags for the file
+* * File contents will then be parsed as markdown, using the go package [blackfriday]("https://github.com/russross/blackfriday").
 
-## Generate
-* Finds files properly named in directory (default dir "."), parses tags/titles/content for each file.
 * Generates static pages for each post, and list of posts for each tag (and complete list).
 * Generates other pages?  Index/About?  Use some marker tag for non-inclusion?
 * Generate will use a resources folder to store template files during production, but these resources will be packed into the binary after sufficient design.
