@@ -1,7 +1,7 @@
-### Static site generation for github pages.
+### Static site generation
 
 ### Commands
-```go
+```bash
 dv FILENAME [...]
 dv g[en[erate]] [DIRECTORY]
 ```
@@ -17,9 +17,10 @@ When dv is called with a list of filenames, those files are renamed to prefix a 
 * * File contents will then be parsed as markdown, using the go package https://github.com/russross/blackfriday
 
 * Generates static pages for each post, and list of posts for each tag (and complete list).
-* Generates other pages?  Index/About?  Use some marker tag for non-inclusion?
-* Generate will use a resources folder to store template files during production, but these resources will be packed into the binary after sufficient design.
+* Tags NODATE and NOTITLE will suppress the inclusion of the date and title on the generated page, as well as suppressing the date's in the filename of the generated file.  This is primarily for index and archive files to still be written as adjustable .md files.
+* Generate will use a resources directory for template files during production, but these resources will be packed into the binary after sufficient design.
 
-
+### Test Server
+This project includes a simple test server to use while designing the page layouts and site structure
 
 

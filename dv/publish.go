@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"io"
 	"mule/devblog/generate"
 	"os"
 	"path/filepath"
@@ -10,7 +11,7 @@ import (
 	"time"
 )
 
-func DvPublish(args []string) error {
+func DvPublish(w io.Writer, args []string) error {
 	if len(args) == 0 {
 		return errors.New("dv publish requires filename commandline arguments")
 	}
@@ -27,6 +28,8 @@ func DvPublish(args []string) error {
 		newName := filepath.Join(dir, now+"_"+base)
 		if err := os.Rename(fileName, newName); err != nil {
 			errs = append(errs, fmt.Sprintf("failed to move file %s: %s", fileName, err.Error()))
+		} else if w != nil {
+			fmt.Fprintf(w, "renaming %s to %s\n", fileName, newName)
 		}
 
 	}

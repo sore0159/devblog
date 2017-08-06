@@ -1,0 +1,10 @@
+{{ define "body" }}
+{{ template "titlebar" . }}
+{{ if not .NoTitle }} <h1>{{ .Title }}</h1> {{ end }}
+{{ if not .NoDate }}<p class="date">Published {{ .Published }}</p>{{ end }}
+{{ .Content }}
+{{ end }}
+
+{{ define "titlebar" }}<div id="titlebar">
+        DEFAULT TITLEBAR
+</div>{{ end }}

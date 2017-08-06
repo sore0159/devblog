@@ -14,7 +14,7 @@ func main() {
 	} else if os.Args[1] == "generate" || os.Args[1] == "gen" || os.Args[1] == "g" {
 		err = DvGenerate(os.Args[2:])
 	} else {
-		err = DvPublish(os.Args[1:])
+		err = DvPublish(os.Stdout, os.Args[1:])
 	}
 
 	if err == HELP_ERR {

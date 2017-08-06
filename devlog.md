@@ -4,6 +4,8 @@ Overhauling the project after deciding on a completely static site, using github
 
 Publishing now consists only of adding a timestamp, no index database is needed.  Generating the site is now an all or nothing affair, and list/index pages for tags will be statically created on site generation.
 
+Publishing and basic generation is operational: tinkering around with page layout has begun.  The next step is creating inter-page structure, such as "next" and "prev" links, as well as tag listings.
+
 
 2017 05 23
 

@@ -14,6 +14,7 @@ import "github.com/russross/blackfriday"
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -36,22 +37,27 @@ type ParsedFile struct {
 	Title     string
 	Published time.Time
 	Tags      []string
-	Content   string
+	Content   template.HTML
 }
 
 func ParseFromFile(dir string, f os.FileInfo) (*ParsedFile, error) {
-	nParts := strings.Split(strings.Split(f.Name(), ".")[0], "_")
+	ext := filepath.Ext(f.Name())
+	if strings.ToLower(ext) != ".md" {
+		return nil, nil
+	}
+	fName := strings.TrimSuffix(f.Name(), ext)
+	nParts := strings.Split(fName, "_")
 	if len(nParts) < 2 {
-		return nil, fmt.Errorf("filename to short: %s", f.Name())
+		return nil, nil //fmt.Errorf("filename to short: %s", f.Name())
 	}
 	pf := &ParsedFile{
-		FileName: strings.Split(f.Name(), ".")[0],
+		FileName: fName,
 		Title:    strings.ToLower(strings.Join(nParts[1:], " ")),
 	}
 
 	var err error
 	if pf.Published, err = time.ParseInLocation(TIME_FORMAT, nParts[0], TIME_ZONE); err != nil {
-		return nil, fmt.Errorf("filename timestamp unparsable: %s", f.Name())
+		return nil, nil //fmt.Errorf("filename timestamp unparsable: %s", f.Name())
 	}
 	var content []byte
 	if content, err = ioutil.ReadFile(filepath.Join(dir, f.Name())); err != nil {
@@ -67,7 +73,7 @@ func ParseFromFile(dir string, f os.FileInfo) (*ParsedFile, error) {
 		content = split[1]
 	}
 
-	pf.Content = string(blackfriday.MarkdownCommon(content))
+	pf.Content = template.HTML(blackfriday.MarkdownCommon(content))
 	return pf, nil
 }
 

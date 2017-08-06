@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"mule/devblog/generate"
+	"os"
 )
 
 func DvGenerate(args []string) error {
@@ -20,5 +21,7 @@ func DvGenerate(args []string) error {
 	if len(dirInfo) == 0 {
 		return fmt.Errorf("no files found in %s", dir)
 	}
-	return generate.Gen(dir, dirInfo)
+	w := os.Stdout
+	// w = ioutil.Discard
+	return generate.Gen(w, dir, dirInfo)
 }
