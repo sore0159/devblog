@@ -1,3 +1,10 @@
+2017 08 05
+
+Overhauling the project after deciding on a completely static site, using github pages for now.  This extremely simplifies a lot of the design considerations.
+
+Publishing now consists only of adding a timestamp, no index database is needed.  Generating the site is now an all or nothing affair, and list/index pages for tags will be statically created on site generation.
+
+
 2017 05 23
 
 Began constructing the format library, getting templates into place, and then building a server to test the resulting templated files ended up becoming serious work on the server architecture that will be in the final server.
