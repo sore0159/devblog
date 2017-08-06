@@ -1,7 +1,9 @@
 package generate
 
 import (
+	"bytes"
 	"fmt"
+	"html/template"
 	"io"
 	"io/ioutil"
 	"os"
@@ -29,16 +31,40 @@ func Gen(w io.Writer, dir string, dirInfo []os.FileInfo) error {
 	if err != nil {
 		return fmt.Errorf("expanding failed: %s", err.Error())
 	}
-	return Write(dir, data)
+	return Write(w, dir, data)
 }
 
-func Write(dir string, data []*GeneratedFile) error {
-	if err := os.Mkdir(filepath.Join(dir, GEN_FOLDER), 0755); err != nil && !os.IsExist(err) {
-		return fmt.Errorf("folder creation failure: %s", err.Error())
+type GeneratedFile struct {
+	FileName string
+	Contents string
+}
+
+func GenFile(fileName string, t *template.Template, data interface{}) (*GeneratedFile, error) {
+	g := new(GeneratedFile)
+	g.FileName = fileName
+	b := new(bytes.Buffer)
+	if err := t.ExecuteTemplate(b, "frame", data); err != nil {
+		return nil, err
+	}
+	g.Contents = string(b.Bytes())
+	return g, nil
+}
+
+func Write(w io.Writer, dir string, data []*GeneratedFile) error {
+	if err := os.Mkdir(filepath.Join(dir, GEN_FOLDER), 0755); err != nil {
+		if !os.IsExist(err) {
+			return fmt.Errorf("folder creation failure: %s", err.Error())
+		} else {
+			fmt.Fprintf(w, "Using existing folder %s\n", filepath.Join(dir, GEN_FOLDER))
+		}
+	} else {
+		fmt.Fprintf(w, "Creating folder %s\n", filepath.Join(dir, GEN_FOLDER))
 	}
 	for _, d := range data {
 		if err := ioutil.WriteFile(filepath.Join(dir, GEN_FOLDER, d.FileName), []byte(d.Contents), 0644); err != nil {
 			return fmt.Errorf("file write failure: %s", err.Error())
+		} else {
+			fmt.Fprintf(w, "Creating file %s\n", filepath.Join(dir, GEN_FOLDER, d.FileName))
 		}
 	}
 	return nil

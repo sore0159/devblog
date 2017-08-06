@@ -47,17 +47,24 @@ func ParseFromFile(dir string, f os.FileInfo) (*ParsedFile, error) {
 	}
 	fName := strings.TrimSuffix(f.Name(), ext)
 	nParts := strings.Split(fName, "_")
+	var flag bool
 	if len(nParts) < 2 {
-		return nil, nil //fmt.Errorf("filename to short: %s", f.Name())
+		flag = true
 	}
 	pf := &ParsedFile{
 		FileName: fName,
-		Title:    strings.ToLower(strings.Join(nParts[1:], " ")),
 	}
 
 	var err error
-	if pf.Published, err = time.ParseInLocation(TIME_FORMAT, nParts[0], TIME_ZONE); err != nil {
-		return nil, nil //fmt.Errorf("filename timestamp unparsable: %s", f.Name())
+	if !flag {
+		if pf.Published, err = time.ParseInLocation(TIME_FORMAT, nParts[0], TIME_ZONE); err != nil {
+			flag = true
+		}
+	}
+	if flag {
+		pf.Title = strings.ToLower(strings.Join(nParts, " "))
+	} else {
+		pf.Title = strings.ToLower(strings.Join(nParts[1:], " "))
 	}
 	var content []byte
 	if content, err = ioutil.ReadFile(filepath.Join(dir, f.Name())); err != nil {
@@ -69,8 +76,14 @@ func ParseFromFile(dir string, f os.FileInfo) (*ParsedFile, error) {
 		pf.Tags = strings.Split(string(tagLine), TAGS_SPLIT)
 		for i, str := range pf.Tags {
 			pf.Tags[i] = strings.TrimSpace(str)
+			if pf.Tags[i] == "NODATE" {
+				flag = false
+			}
 		}
 		content = split[1]
+	}
+	if flag {
+		return nil, nil
 	}
 
 	pf.Content = template.HTML(blackfriday.MarkdownCommon(content))
@@ -79,6 +92,7 @@ func ParseFromFile(dir string, f os.FileInfo) (*ParsedFile, error) {
 
 func (pf ParsedFile) String() string {
 	return fmt.Sprintf(`Title: %s
+
 Pub: %s
 Tags: %s
 Content: %s

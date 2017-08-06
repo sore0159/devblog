@@ -2,9 +2,11 @@
 {{ template "titlebar" . }}
 {{ if not .NoTitle }} <h1>{{ .Title }}</h1> {{ end }}
 {{ if not .NoDate }}<p class="date">Published {{ .Published }}</p>{{ end }}
+{{ if .ContentTags }}<p class="mytags">Tagged: {{ range .ContentTags }}<a class="taglink" href="/{{ index . 1 }}">{{ index . 0 }}</a> {{ end }}</p>{{ end }}
 {{ .Content }}
 {{ end }}
 
 {{ define "titlebar" }}<div id="titlebar">
         DEFAULT TITLEBAR
 </div>{{ end }}
+{{ define "title" }}Eric Sorell Writes Code{{ if .Title }}: ({{ .Title }}){{ end }}{{ end }}

@@ -1,3 +1,11 @@
+2017 08 06
+
+Archive pages for posts are operational, as well as template-based index file creation.  I might want to include the whole text of the most recent post on the main page?
+
+Next big step is adding navigation to post pages, including tag-based navigation.  Design is proceeding; happy with the minimalist style but not sure about the colors.
+
+After navigation, I think it'll be time to work on content (index, about, and posts themselves).
+
 2017 08 05
 
 Overhauling the project after deciding on a completely static site, using github pages for now.  This extremely simplifies a lot of the design considerations.
