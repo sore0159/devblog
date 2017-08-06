@@ -1,10 +1,10 @@
-##Pure static site generation for github pages.
+## Pure static site generation for github pages.
 
 File Name: post_title.md
 File First Line (optional): TAGS: Comma separated, Case Sensitive
 File Contents: Markdown content 
 
-##Commands:
+## Commands
 dv publish post_title.md [...]
 dv generate [directory]
 
