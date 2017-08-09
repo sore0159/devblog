@@ -2,8 +2,6 @@ package generate
 
 import (
 	"fmt"
-	"html/template"
-	"path/filepath"
 	"sort"
 	"strings"
 )
@@ -27,19 +25,19 @@ func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 	SortByDate(posts)
 
 	data = make([]*GeneratedFile, len(parsed))
-	g, err := GenFile("archives.html", TemplateFrom("frame", "main_archive", "titlebar", "link_list"), processed)
+	g, err := GenFile("archives.html", TMP_MAIN_ARCHIVE, processed)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create page: %s", err.Error())
 	}
 	data = append(data, g)
 
-	g, err = GenFile("index.html", TemplateFrom("frame", "index", "titlebar", "link_list"), processed[0])
+	g, err = GenFile("index.html", TMP_INDEX, processed[0])
 	if err != nil {
 		return nil, fmt.Errorf("failed to create page: %s", err.Error())
 	}
 	data = append(data, g)
 
-	tList := TemplateFrom("frame", "tag_archive", "titlebar", "link_list")
+	tList := TMP_TAG_ARCHIVE
 	tgList := make([]string, 0, len(tags))
 	for tg, list := range tags {
 		tgList = append(tgList, tg)
@@ -57,7 +55,7 @@ func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 		AddTagNavs(tg, tags[tg])
 	}
 
-	t := TemplateFrom("frame", "body", "titlebar", "nav_bar")
+	t := TMP_POST
 	for i, pf := range processed {
 		g, err := GenFile(pf.FileName, t, pf)
 		if err != nil {
@@ -68,18 +66,6 @@ func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 	return data, nil
 }
 
-const (
-	TMP_DIR = "resources"
-	TMP_EXT = ".html"
-)
-
 func TagLink(tag string) (link string) {
 	return "archives_" + strings.Replace(strings.ToLower(tag), " ", "_", -1) + ".html"
-}
-
-func TemplateFrom(names ...string) *template.Template {
-	for i, n := range names {
-		names[i] = filepath.Join(TMP_DIR, n+TMP_EXT)
-	}
-	return template.Must(template.ParseFiles(names...))
 }

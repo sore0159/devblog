@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -29,7 +30,8 @@ func main() {
 	case <-ch:
 		fmt.Println("")
 		log.Println("Termination signal recieved, stopping server...")
-		err := server.Shutdown(nil)
+		ctx := context.TODO()
+		err := server.Shutdown(ctx)
 		if err != nil {
 			LogServerErr("shutdown failure: %s", err)
 		}
@@ -47,11 +49,14 @@ func LogServerErr(str string, args ...interface{}) {
 
 func MakeMux() *http.ServeMux {
 	mux := http.NewServeMux()
+	const STATIC_DIR = "sore0159.github.io"
+	// const STATIC_DIR = "static"
 	mux.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "static/img/yd32.ico")
+		http.ServeFile(w, r, STATIC_DIR+"/img/yd32.ico")
 	})
-	mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("static/img"))))
-	mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("static/css"))))
-	mux.Handle("/", http.FileServer(http.Dir("posts/generated")))
+	mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir(STATIC_DIR+"/img"))))
+	mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir(STATIC_DIR+"/css"))))
+	mux.Handle("/", http.FileServer(http.Dir("generated")))
+	//mux.Handle("/", http.FileServer(http.Dir(STATIC_DIR)))
 	return mux
 }

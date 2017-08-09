@@ -1,4 +1,6 @@
-{{ define "body" }}
+package templates
+
+const TMP_TAG_ARCHIVE = `{{ define "body" }}
 {{ template "titlebar" . }}
 <h1>{{ .Title }}</h1>
 <p class="date">Tag "{{ .Tag }}" last used: {{ .Latest }}</p>
@@ -8,4 +10,4 @@
 
 {{ end }}
 
-{{ define "title" }}Eric Sorell Writes Code (Archive: {{ .Tag }}){{ end }}
+{{ define "title" }}Eric Sorell Writes Code (Archive: {{ .Tag }}){{ end }}`

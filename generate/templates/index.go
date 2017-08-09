@@ -1,4 +1,6 @@
-{{ define "body" }}
+package templates
+
+const TMP_INDEX = `{{ define "body" }}
 {{ template "titlebar" . }}
 <h3>Latest Post:</h3>
 <p class="index">{{ template "fulllink" . }}</p>
@@ -7,4 +9,4 @@
 
 {{ end }}
 
-{{ define "title" }}Eric Sorell Writes Code{{ end }}
+{{ define "title" }}Eric Sorell Writes Code{{ end }}`

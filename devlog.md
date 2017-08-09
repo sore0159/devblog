@@ -7,6 +7,8 @@ Possible features for further development at a later time:
 * Consolidation of TOTITLE and NODATE into a simpler NOPOST flag, possibly with several "content type" tags?
 * Sprucing up archive pages with lines/breaks between months/years.
 
+For now, modifying test server and possibly dv gen command to facilitate actually using this stuff for my github pages
+
 2017 08 06
 
 Archive pages for posts are operational, as well as template-based index file creation.  I might want to include the whole text of the most recent post on the main page?

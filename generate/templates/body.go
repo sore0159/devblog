@@ -1,4 +1,6 @@
-{{ define "body" }}
+package templates
+
+const TMP_BODY = `{{ define "body" }}
 {{ template "titlebar" . }}
 {{ if not .NoTitle }}
 <h1>{{ .Title }}</h1> 
@@ -23,4 +25,4 @@
 </div>
 {{ end }}
 
-{{ define "title" }}Eric Sorell Writes Code{{ if .Title }}: ({{ .Title }}){{ end }}{{ end }}
+{{ define "title" }}Eric Sorell Writes Code{{ if .Title }}: ({{ .Title }}){{ end }}{{ end }}`

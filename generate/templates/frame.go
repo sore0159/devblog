@@ -1,4 +1,6 @@
-{{ define "frame" -}}
+package templates
+
+const TMP_FRAME = `{{ define "frame" -}}
 <!doctype html>
 <html>
 <head>
@@ -16,4 +18,4 @@
 
 {{ define "css" }}basic{{ end }}
 {{ define "title" }}Eric Sorell Writes Code{{ end }}
-{{ define "body" }}Default Body{{ end }}
+{{ define "body" }}Default Body{{ end }}`

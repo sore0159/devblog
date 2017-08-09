@@ -1,4 +1,6 @@
-{{ define "navbar" }}
+package templates
+
+const TMP_NAVBAR = `{{ define "navbar" }}
 {{ if index .Has 0 }}
 <a class="navbar" href="{{ .FirstFN }}" title="{{.FirstT }} ({{ .FirstPub }})">First</a>
 {{ else }}
@@ -30,4 +32,4 @@
 {{ else }}
 <span class="inv">Latest</span>
 {{ end }}
-{{ end }}
+{{ end }}`

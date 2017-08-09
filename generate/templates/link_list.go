@@ -1,4 +1,6 @@
-{{ define "linklist" }}
+package templates
+
+const TMP_LINKLIST = `{{ define "linklist" }}
 {{ if . }}
 <ul>
 {{ range . }}
@@ -16,4 +18,4 @@
         {{ if .ContentTags }}<b>Tags:</b> 
         {{ range .ContentTags }}<a class="taglink" href="/{{ index . 1 }}">{{ index . 0 }}</a>{{ end }}
         {{ end }}
-{{ end }}
+{{ end }}`

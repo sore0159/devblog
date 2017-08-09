@@ -10,8 +10,6 @@ import (
 	"path/filepath"
 )
 
-const GEN_FOLDER = "generated"
-
 func Gen(w io.Writer, dir string, dirInfo []os.FileInfo) error {
 	parsed := make([]*ParsedFile, 0, len(dirInfo))
 	for _, di := range dirInfo {
@@ -51,20 +49,23 @@ func GenFile(fileName string, t *template.Template, data interface{}) (*Generate
 }
 
 func Write(w io.Writer, dir string, data []*GeneratedFile) error {
-	if err := os.Mkdir(filepath.Join(dir, GEN_FOLDER), 0755); err != nil {
+	destF := "generated"
+	//destF := filepath.Join(dir, "generated")
+	//destF := "sore0159.github.io"
+	if err := os.Mkdir(destF, 0755); err != nil {
 		if !os.IsExist(err) {
 			return fmt.Errorf("folder creation failure: %s", err.Error())
 		} else {
-			fmt.Fprintf(w, "Using existing folder %s\n", filepath.Join(dir, GEN_FOLDER))
+			fmt.Fprintf(w, "Using existing folder %s\n", destF)
 		}
 	} else {
-		fmt.Fprintf(w, "Creating folder %s\n", filepath.Join(dir, GEN_FOLDER))
+		fmt.Fprintf(w, "Creating folder %s\n", destF)
 	}
 	for _, d := range data {
-		if err := ioutil.WriteFile(filepath.Join(dir, GEN_FOLDER, d.FileName), []byte(d.Contents), 0644); err != nil {
+		if err := ioutil.WriteFile(filepath.Join(destF, d.FileName), []byte(d.Contents), 0644); err != nil {
 			return fmt.Errorf("file write failure: %s", err.Error())
 		} else {
-			fmt.Fprintf(w, "Creating file %s\n", filepath.Join(dir, GEN_FOLDER, d.FileName))
+			fmt.Fprintf(w, "Creating file %s\n", filepath.Join(destF, d.FileName))
 		}
 	}
 	return nil
