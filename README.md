@@ -24,4 +24,9 @@ When dv is called with a list of filenames, those files are renamed to prefix a 
 ### Test Server
 This project includes a simple test server to use while designing the page layouts and site structure
 
-
+### Potential Additions
+* Dynamic JS navigation
+* Consolidation of TOTITLE and NODATE into a simpler NOPOST flag, possibly with several "content type" tags?
+* Sprucing up archive pages with lines/breaks between months/years.
+* RSS feed generation
+* Configuration files/options
