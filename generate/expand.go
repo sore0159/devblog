@@ -4,33 +4,29 @@ import (
 	"fmt"
 	"html/template"
 	"path/filepath"
+	"sort"
 	"strings"
 )
 
 func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 	processed := make([]*ProcessedFile, len(parsed))
-	for i, p := range parsed {
-		processed[i] = Process(p)
-	}
-
-	data = make([]*GeneratedFile, len(parsed))
-	t := TemplateFrom("frame", "body", "titlebar")
+	posts := make([]*ProcessedFile, 0, len(parsed))
 	tags := make(map[string][]*ProcessedFile)
-	for i, pf := range processed {
-		g, err := GenFile(pf.FileName, t, pf)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create page: %s", err.Error())
-		}
-		data[i] = g
+	for i, p := range parsed {
+		pf := Process(p)
+		processed[i] = pf
 		if pf.NoDate {
 			continue
 		}
+		posts = append(posts, pf)
 		for _, tg := range pf.ContentTags {
 			tags[tg[0]] = append(tags[tg[0]], pf)
 		}
 	}
 	SortByDate(processed)
+	SortByDate(posts)
 
+	data = make([]*GeneratedFile, len(parsed))
 	g, err := GenFile("archives.html", TemplateFrom("frame", "main_archive", "titlebar", "link_list"), processed)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create page: %s", err.Error())
@@ -44,13 +40,30 @@ func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 	data = append(data, g)
 
 	tList := TemplateFrom("frame", "tag_archive", "titlebar", "link_list")
+	tgList := make([]string, 0, len(tags))
 	for tg, list := range tags {
+		tgList = append(tgList, tg)
 		pTL := ProcessTaglist(tg, list)
 		g, err := GenFile(pTL.FileName, tList, pTL)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create page: %s", err.Error())
 		}
 		data = append(data, g)
+	}
+	sort.Strings(tgList)
+	AddTagNavs("", posts)
+	for _, tg := range tgList {
+		fmt.Println("TAG", tg, " LIST ", tags[tg])
+		AddTagNavs(tg, tags[tg])
+	}
+
+	t := TemplateFrom("frame", "body", "titlebar", "nav_bar")
+	for i, pf := range processed {
+		g, err := GenFile(pf.FileName, t, pf)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create page: %s", err.Error())
+		}
+		data[i] = g
 	}
 	return data, nil
 }

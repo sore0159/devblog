@@ -15,6 +15,7 @@ type ProcessedFile struct {
 	NoTitle     bool
 	Published   string
 	PubTime     time.Time
+	TagNavs     []TagNav
 }
 
 func Process(p *ParsedFile) *ProcessedFile {

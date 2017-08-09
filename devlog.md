@@ -1,3 +1,12 @@
+2017 08 08
+
+Brutally simple navigation operational.  Design functional to the point where I'm okay wrapping up the template files into the binary so the command can be used in any directory.
+
+Possible features for further development at a later time:
+* Dynamic JS allowing for less brutal navigation layout.
+* Consolidation of TOTITLE and NODATE into a simpler NOPOST flag, possibly with several "content type" tags?
+* Sprucing up archive pages with lines/breaks between months/years.
+
 2017 08 06
 
 Archive pages for posts are operational, as well as template-based index file creation.  I might want to include the whole text of the most recent post on the main page?
