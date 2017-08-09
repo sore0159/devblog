@@ -1,6 +1,6 @@
 package generate
 
-import t "mule/devblog/generate/templates"
+import t "github.com/sore0159/devblog/generate/templates"
 
 import (
 	"html/template"

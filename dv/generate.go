@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/sore0159/devblog/generate"
 	"io/ioutil"
-	"mule/devblog/generate"
 	"os"
 )
 

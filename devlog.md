@@ -1,3 +1,7 @@
+2017 08 09
+
+Changing import paths to make my github repositories be actually usable by people other than myself.  Added further development possibilities to the README so I don't have to add to the devlog every time I revise or add to those.
+
 2017 08 08
 
 Brutally simple navigation operational.  Design functional to the point where I'm okay wrapping up the template files into the binary so the command can be used in any directory.

@@ -3,8 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/sore0159/devblog/generate"
 	"io"
-	"mule/devblog/generate"
 	"os"
 	"path/filepath"
 	"strings"
