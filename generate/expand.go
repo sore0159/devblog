@@ -7,12 +7,17 @@ import (
 )
 
 func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
-	processed := make([]*ProcessedFile, len(parsed))
+	processed := make([]*ProcessedFile, 0, len(parsed))
 	posts := make([]*ProcessedFile, 0, len(parsed))
 	tags := make(map[string][]*ProcessedFile)
-	for i, p := range parsed {
+	var indexP *ProcessedFile
+	for _, p := range parsed {
 		pf := Process(p)
-		processed[i] = pf
+		if indexP == nil && p.FileName == "index" {
+			indexP = pf
+			continue
+		}
+		processed = append(processed, pf)
 		if pf.NoDate {
 			continue
 		}
@@ -24,14 +29,14 @@ func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 	SortByDate(processed)
 	SortByDate(posts)
 
-	data = make([]*GeneratedFile, len(parsed))
+	data = make([]*GeneratedFile, 0, len(parsed))
 	g, err := GenFile("archives.html", TMP_MAIN_ARCHIVE, processed)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create page: %s", err.Error())
 	}
 	data = append(data, g)
 
-	g, err = GenFile("index.html", TMP_INDEX, processed[0])
+	g, err = GenFile("index.html", TMP_INDEX, [2]*ProcessedFile{indexP, processed[0]})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create page: %s", err.Error())
 	}
@@ -56,12 +61,12 @@ func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 	}
 
 	t := TMP_POST
-	for i, pf := range processed {
+	for _, pf := range processed {
 		g, err := GenFile(pf.FileName, t, pf)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create page: %s", err.Error())
 		}
-		data[i] = g
+		data = append(data, g)
 	}
 	return data, nil
 }

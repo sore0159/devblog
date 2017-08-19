@@ -62,10 +62,13 @@ func Write(w io.Writer, dir string, data []*GeneratedFile) error {
 		fmt.Fprintf(w, "Creating folder %s\n", destF)
 	}
 	for _, d := range data {
+		if d == nil {
+			fmt.Fprintf(w, "Error: nil data\n")
+			continue
+		}
+		fmt.Fprintf(w, "Creating file %s\n", filepath.Join(destF, d.FileName))
 		if err := ioutil.WriteFile(filepath.Join(destF, d.FileName), []byte(d.Contents), 0644); err != nil {
 			return fmt.Errorf("file write failure: %s", err.Error())
-		} else {
-			fmt.Fprintf(w, "Creating file %s\n", filepath.Join(destF, d.FileName))
 		}
 	}
 	return nil

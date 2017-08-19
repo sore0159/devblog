@@ -1,3 +1,9 @@
+2017 08 19
+
+Switched templates back to runtime reads, since I guess I want to tinker around with design more regularly than I expected.  This means a templates folder needs to be in the working directory of the generate command when run, but I think is not a worthwhile thing to work to eliminate.
+
+Created a little bit of special parsing for the index.md file, allowing the main site index to be half-created from a markdown file while still auto-updating the 'latest post' segment of it.
+
 2017 08 09
 
 Changing import paths to make my github repositories be actually usable by people other than myself.  Added further development possibilities to the README so I don't have to add to the devlog every time I revise or add to those.
