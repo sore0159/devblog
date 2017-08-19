@@ -1,0 +1,9 @@
+{{ define "body" }}
+{{ template "titlebar" . }}
+<h3>Latest Post:</h3>
+<p class="index">{{ template "fulllink" (index . 1) }}</p>
+{{ (index . 0).Content }}
+
+{{ end }}
+
+{{ define "title" }}Eric Sorell Writes Code{{ end }}
