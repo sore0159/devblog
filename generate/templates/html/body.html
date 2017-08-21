@@ -1,7 +1,6 @@
 {{ define "body" }}
-{{ template "titlebar" . }}
 {{ if not .NoTitle }}
-<h1>{{ .Title }}</h1> 
+<h1><a class=posttitle href="{{ .FileName }}">{{ .Title }}</a></h1> 
 {{ end }}
 <div id="postheader">
 {{ if not .NoDate }}<p class="date">Published {{ .Published }}</p>{{ end }}
@@ -13,12 +12,14 @@
 {{ end }}
 </div>
 {{ .Content }}
+{{ if not .NoDate }}
 <hr class=navbar />
 <div id="navbar">
 {{ range .TagNavs }}
 <div class="navbar">
 {{ template "navbar" . }}
 </div>
+{{ end }}
 {{ end }}
 </div>
 {{ end }}

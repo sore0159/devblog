@@ -2,12 +2,13 @@
 
 ### Commands
 ```bash
-dv FILENAME [...]
+dv [c] FILENAME [...]
 dv g[en[erate]] [DIRECTORY]
 ```
 
 ### Publish
-When dv is called with a list of filenames, those files are renamed to prefix a timestamp to their name.
+* When dv is called with a list of filenames, those files are renamed to prefix a timestamp to their name.
+* If the first argument to dv is 'c', published files will be copied, otherwise they will be moved
 
 ### Generate
 * Searches for the given directory, uses "." if none specified
