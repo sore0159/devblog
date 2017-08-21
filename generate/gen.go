@@ -10,16 +10,16 @@ import (
 	"path/filepath"
 )
 
-func Gen(w io.Writer, dir string, dirInfo []os.FileInfo) error {
-	parsed := make([]*ParsedFile, 0, len(dirInfo))
-	for _, di := range dirInfo {
-		if pf, err := ParseFromFile(dir, di); err != nil {
+func Gen(w io.Writer, names []string) error {
+	parsed := make([]*ParsedFile, 0, len(names))
+	for _, name := range names {
+		if pf, err := ParseFromFile(name); err != nil {
 			return fmt.Errorf("parsing failed: %s", err.Error())
 		} else if pf != nil {
-			fmt.Fprintf(w, "Parsed %s\n", di.Name())
+			fmt.Fprintf(w, "Parsed %s\n", name)
 			parsed = append(parsed, pf)
 		} else {
-			fmt.Fprintf(w, "Ignored %s\n", di.Name())
+			fmt.Fprintf(w, "Ignored %s\n", name)
 		}
 	}
 	if len(parsed) == 0 {
@@ -29,7 +29,7 @@ func Gen(w io.Writer, dir string, dirInfo []os.FileInfo) error {
 	if err != nil {
 		return fmt.Errorf("expanding failed: %s", err.Error())
 	}
-	return Write(w, dir, data)
+	return Write(w, data)
 }
 
 type GeneratedFile struct {
@@ -48,10 +48,8 @@ func GenFile(fileName string, t *template.Template, data interface{}) (*Generate
 	return g, nil
 }
 
-func Write(w io.Writer, dir string, data []*GeneratedFile) error {
+func Write(w io.Writer, data []*GeneratedFile) error {
 	destF := "generated"
-	//destF := filepath.Join(dir, "generated")
-	//destF := "sore0159.github.io"
 	if err := os.Mkdir(destF, 0755); err != nil {
 		if !os.IsExist(err) {
 			return fmt.Errorf("folder creation failure: %s", err.Error())

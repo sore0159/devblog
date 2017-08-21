@@ -2,6 +2,8 @@
 
 More design changes.  Some template changes for design tweaks, and the addition of a "c" copy flag for the dv publish command, to help me out when I want to publish a post but maybe change it and republish it after I see how it looks.
 
+Change to dv gen to allow multiple directories as input: I'm tired of feeling afraid I might delete my index.md file when I'm clearing out a bunch of test posts.  This means files could potentially overwrite each other if I somehow had two with the same name in different folders, but given the timestamps published files must have I'm not worried about this as of yet.
+
 2017 08 19
 
 Switched templates back to runtime reads, since I guess I want to tinker around with design more regularly than I expected.  This means a templates folder needs to be in the working directory of the generate command when run, but I think is not a worthwhile thing to work to eliminate.

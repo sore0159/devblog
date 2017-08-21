@@ -27,8 +27,8 @@ func main() {
 func PrintHelp(w io.Writer) {
 	fmt.Fprint(w,
 		`Usage: 
-	dv [filenames...]         -- renames files with timestamp
-	dv generate [directory]   -- generates static content
+	dv [filenames...]              -- renames files with timestamp
+	dv generate [directories...]   -- generates static content
  `)
 }
 

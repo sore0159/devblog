@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
-	"os"
+	//"os"
 	"path/filepath"
 	"strings"
 	"time"
@@ -40,12 +40,13 @@ type ParsedFile struct {
 	Content   template.HTML
 }
 
-func ParseFromFile(dir string, f os.FileInfo) (*ParsedFile, error) {
-	ext := filepath.Ext(f.Name())
+func ParseFromFile(name string) (*ParsedFile, error) {
+	base := filepath.Base(name)
+	ext := filepath.Ext(name)
 	if strings.ToLower(ext) != ".md" {
 		return nil, nil
 	}
-	fName := strings.TrimSuffix(f.Name(), ext)
+	fName := strings.TrimSuffix(base, ext)
 	nParts := strings.Split(fName, "_")
 	var flag bool
 	if len(nParts) < 2 {
@@ -67,8 +68,8 @@ func ParseFromFile(dir string, f os.FileInfo) (*ParsedFile, error) {
 		pf.Title = strings.ToLower(strings.Join(nParts[1:], " "))
 	}
 	var content []byte
-	if content, err = ioutil.ReadFile(filepath.Join(dir, f.Name())); err != nil {
-		return nil, fmt.Errorf("file %s unreadable: %s", filepath.Join(dir, f.Name()), err.Error())
+	if content, err = ioutil.ReadFile(name); err != nil {
+		return nil, fmt.Errorf("file %s unreadable: %s", name, err.Error())
 	}
 	split := bytes.SplitN(content, LINE_SPLIT, 2)
 	if len(split) > 1 && bytes.HasPrefix(split[0], TAGS_PREFIX) {
