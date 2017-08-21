@@ -18,6 +18,7 @@ import (
 	"io/ioutil"
 	//"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 )
@@ -81,6 +82,7 @@ func ParseFromFile(name string) (*ParsedFile, error) {
 				flag = false
 			}
 		}
+		sort.Strings(pf.Tags)
 		content = split[1]
 	}
 	if flag {
