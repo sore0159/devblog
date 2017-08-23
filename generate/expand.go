@@ -18,7 +18,7 @@ func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 			continue
 		}
 		processed = append(processed, pf)
-		if pf.NoDate {
+		if pf.NoPost {
 			continue
 		}
 		posts = append(posts, pf)

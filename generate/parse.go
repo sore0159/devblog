@@ -78,7 +78,7 @@ func ParseFromFile(name string) (*ParsedFile, error) {
 		pf.Tags = strings.Split(string(tagLine), TAGS_SPLIT)
 		for i, str := range pf.Tags {
 			pf.Tags[i] = strings.TrimSpace(str)
-			if pf.Tags[i] == "NODATE" {
+			if pf.Tags[i] == "NOPOST" {
 				flag = false
 			}
 		}

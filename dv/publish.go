@@ -16,9 +16,9 @@ func DvPublish(w io.Writer, args []string) error {
 	if len(args) == 0 {
 		return errors.New("dv publish requires filename commandline arguments")
 	}
-	var cpy bool
-	if args[0] == "c" {
-		cpy = true
+	cpy := true
+	if args[0] == "m" {
+		cpy = false
 		args = args[1:]
 		if len(args) == 0 {
 			return errors.New("dv publish requires filename commandline arguments")
@@ -34,6 +34,10 @@ func DvPublish(w io.Writer, args []string) error {
 		}
 
 		dir, base := filepath.Split(fileName)
+		baseParts := strings.Split(base, "_")
+		if _, err := time.ParseInLocation(generate.TIME_FORMAT, baseParts[0], generate.TIME_ZONE); err == nil {
+			base = strings.Join(baseParts[1:], "_")
+		}
 		newName := filepath.Join(dir, now+"_"+base)
 		if cpy {
 			if err := CopyFile(fileName, newName); err != nil {

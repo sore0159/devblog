@@ -2,7 +2,7 @@
 {{ if . }}
 <ul>
 {{ range . }}
-{{ if not .NoDate }}
+{{ if not .NoPost }}
 <li> {{ template "fulllink" . }} </li>
 
 {{ end }}

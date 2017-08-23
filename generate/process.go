@@ -11,8 +11,7 @@ type ProcessedFile struct {
 	Title       string
 	ContentTags [][2]string
 	Content     template.HTML
-	NoDate      bool
-	NoTitle     bool
+	NoPost      bool
 	Published   string
 	PubTime     time.Time
 	TagNavs     []TagNav
@@ -28,15 +27,13 @@ func Process(p *ParsedFile) *ProcessedFile {
 	}
 	for _, t := range p.Tags {
 		switch t {
-		case "NODATE":
-			pf.NoDate = true
-		case "NOTITLE":
-			pf.NoTitle = true
+		case "NOPOST":
+			pf.NoPost = true
 		default:
 			pf.ContentTags = append(pf.ContentTags, [2]string{t, TagLink(t)})
 		}
 	}
-	if !pf.NoDate {
+	if !pf.NoPost {
 		pf.Published = p.Published.Format("Jan 2, 2006 (15:04)")
 	}
 	return pf

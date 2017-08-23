@@ -1,18 +1,18 @@
 {{ define "body" }}
-{{ if not .NoTitle }}
+{{ if not .NoPost }}
 <h1><a class=posttitle href="{{ .FileName }}">{{ .Title }}</a></h1> 
 {{ end }}
 <div id="postheader">
-{{ if not .NoDate }}<p class="date">Published {{ .Published }}</p>{{ end }}
+{{ if not .NoPost }}<p class="date">Published {{ .Published }}</p>{{ end }}
 {{ if .ContentTags }}<p class="mytags">Tagged: {{ range .ContentTags }}<a class="taglink" href="/{{ index . 1 }}">{{ index . 0 }}</a> {{ end }}</p>{{ end }}
-{{ if not .NoTitle }}
+{{ if not .NoPost }}
 <div class="topnav">
 <b>Go to:</b> {{ template "navbar" (index .TagNavs 0) }}
 </div>
 {{ end }}
 </div>
 {{ .Content }}
-{{ if not .NoDate }}
+{{ if not .NoPost }}
 <hr class=navbar />
 <div id="navbar">
 {{ range .TagNavs }}

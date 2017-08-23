@@ -2,13 +2,14 @@
 
 ### Commands
 ```bash
-dv [c] FILENAME [...]
+dv [m] FILENAME [...]
 dv g[en[erate]] [DIRECTORY] [...]
 ```
 
 ### Publish
-* When dv is called with a list of filenames, those files are renamed to prefix a timestamp to their name.
-* If the first argument to dv is 'c', published files will be copied, otherwise they will be moved
+* When dv is called with a list of filenames, those files are copied to append a timestamp prefix to their name.
+* If the first argument to dv is 'm', published files will be moved instead of copied.
+* If a file already has a properly formatted timestamp as it's prefix, that timestamp will be replaced rather than appended too.
 
 ### Generate
 * Searches for the given directories, uses "." if none specified
@@ -29,7 +30,6 @@ This project includes a simple test server to use while designing the page layou
 
 ### Potential Additions
 * Dynamic JS navigation
-* Consolidation of TOTITLE and NODATE into a simpler NOPOST flag, possibly with several "content type" tags?
 * Sprucing up archive pages with lines/breaks between months/years.
 * RSS feed generation
 * Configuration files/options
