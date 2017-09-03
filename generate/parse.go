@@ -17,6 +17,7 @@ import (
 	"html/template"
 	"io/ioutil"
 	//"os"
+	"errors"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -27,10 +28,11 @@ const TIME_FORMAT = "0601021504"
 const FINAL_EXT = ".html"
 
 var (
-	TAGS_PREFIX = []byte("TAGS: ")
-	LINE_SPLIT  = []byte("\n")
-	TAGS_SPLIT  = ","
-	TIME_ZONE   = time.Now().Location()
+	TAGS_PREFIX  = []byte("TAGS: ")
+	LINE_SPLIT   = []byte("\n")
+	TAGS_SPLIT   = ","
+	TIME_ZONE    = time.Now().Location()
+	ERR_TIMELESS = errors.New("post missing timestamp or NOPOST flag!")
 )
 
 type ParsedFile struct {
@@ -85,11 +87,11 @@ func ParseFromFile(name string) (*ParsedFile, error) {
 		sort.Strings(pf.Tags)
 		content = split[1]
 	}
-	if flag {
-		return nil, nil
-	}
 
 	pf.Content = template.HTML(blackfriday.MarkdownCommon(content))
+	if flag {
+		return pf, ERR_TIMELESS
+	}
 	return pf, nil
 }
 

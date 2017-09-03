@@ -13,6 +13,8 @@ func main() {
 		err = HELP_ERR
 	} else if os.Args[1] == "generate" || os.Args[1] == "gen" || os.Args[1] == "g" {
 		err = DvGenerate(os.Args[2:])
+	} else if os.Args[1] == "test" || os.Args[1] == "t" {
+		err = DvTestGenerate(os.Args[2:])
 	} else {
 		err = DvPublish(os.Stdout, os.Args[1:])
 	}
@@ -27,8 +29,9 @@ func main() {
 func PrintHelp(w io.Writer) {
 	fmt.Fprint(w,
 		`Usage: 
-	dv [filenames...]              -- renames files with timestamp
-	dv generate [directories...]   -- generates static content
+	dv [m] [filenames...]              -- renames[/moves] files with timestamp
+	dv t[est] FILENAME                 -- test generation for single file 
+	dv g[en[erate]] [directories...]   -- generates static content
  `)
 }
 

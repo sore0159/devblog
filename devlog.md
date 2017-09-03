@@ -1,3 +1,11 @@
+2017 09 03
+
+Continued use of this program has lead to further feature development.  When I'm editing a new post, often I want a quick look at the page that I'm working on will look, without having to regenerate the entire site.  So I've added a command to "generate just this one page without even needing it to be published, and in a form that can be viewed right now without a web server".
+
+Adding in all the adjustments required for a browser to find the css files locally make me think again on the hard-coded aspects of this program that are specific to me, personally.  While I am not really developing for others to use this program, _in principle_ I do want others to be at least _able_ to run the programs.
+
+So, I've also adjusted a few settings in the test server and tried to update the README to make resource expectations more explicit.  Things like where the program expects to find template and css resources.  I'm keeping defaults in line with my own system for ease of personal use, but trying to allow users to change those settings without editing the source code itself.
+
 2017 08 21
 
 More design changes.  Some template changes for design tweaks, and the addition of a "c" copy flag for the dv publish command, to help me out when I want to publish a post but maybe change it and republish it after I see how it looks.

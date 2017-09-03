@@ -1,0 +1,24 @@
+{{ define "frame" -}}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TEST PAGE: {{ template "title" . }}</title>
+<link rel="stylesheet" href="../css/{{ template "css" . }}.css">
+<!--
+<link rel="shortcut icon" href="../sore0159.github.io/img/yd32.ico">
+-->
+</head>
+<body>
+{{ template "titlebar" . }}
+<div id=bodyholder>
+{{ template "body" . }}
+</div>
+</body>
+</html>
+{{ end }}
+
+
+{{ define "title" }}Eric Sorell Writes Code{{ if .Title }}: ({{ .Title }}){{ end }}{{ end }}
+{{ define "css" }}basic{{ end }}
+

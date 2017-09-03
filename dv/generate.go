@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"github.com/sore0159/devblog/generate"
 	"io/ioutil"
+	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 )
 
@@ -28,4 +30,24 @@ func DvGenerate(args []string) error {
 	w := os.Stdout
 	// w = ioutil.Discard
 	return generate.Gen(w, names)
+}
+
+func DvTestGenerate(args []string) error {
+	if len(args) != 1 {
+		return HELP_ERR
+	}
+	w := os.Stdout
+	// w = ioutil.Discard
+	fName, err := generate.TestGen(w, args[0])
+	if err != nil {
+		return err
+	}
+
+	log.Println("Starting browser...")
+	cmd := exec.Command("open", fName)
+	if err := cmd.Run(); err != nil {
+		log.Println("browser run error: ", err)
+		fmt.Println("\nPlease start a browser manually and go to " + fName)
+	}
+	return nil
 }

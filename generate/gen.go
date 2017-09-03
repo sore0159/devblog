@@ -8,13 +8,18 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 func Gen(w io.Writer, names []string) error {
 	parsed := make([]*ParsedFile, 0, len(names))
 	for _, name := range names {
 		if pf, err := ParseFromFile(name); err != nil {
-			return fmt.Errorf("parsing failed: %s", err.Error())
+			if err == ERR_TIMELESS {
+				fmt.Fprintf(w, "Ignored %s\n", name)
+			} else {
+				return fmt.Errorf("parsing failed: %s", err.Error())
+			}
 		} else if pf != nil {
 			fmt.Fprintf(w, "Parsed %s\n", name)
 			parsed = append(parsed, pf)
@@ -70,4 +75,28 @@ func Write(w io.Writer, data []*GeneratedFile) error {
 		}
 	}
 	return nil
+}
+
+func TestGen(w io.Writer, name string) (string, error) {
+	pf, err := ParseFromFile(name)
+	pf.Tags = append(pf.Tags, "TESTING")
+	pf.FileName = "TESTING_" + pf.FileName
+	if err != nil {
+		if err == ERR_TIMELESS {
+			pf.Published = time.Now()
+		} else {
+			return "", fmt.Errorf("parsing failed: %s", err.Error())
+		}
+	} else if pf == nil {
+		return "", fmt.Errorf("parsing failed: %s ignored", name)
+	}
+	fmt.Fprintf(w, "Parsed %s\n", name)
+	pr := Process(pf)
+	AddTagNavs("", []*ProcessedFile{pr})
+	t := TMP_TEST_POST
+	g, err := GenFile(pr.FileName, t, pr)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate page: %s", err.Error())
+	}
+	return filepath.Join("generated", g.FileName), Write(w, []*GeneratedFile{g})
 }

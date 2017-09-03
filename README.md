@@ -4,6 +4,9 @@
 ```bash
 dv [m] FILENAME [...]
 dv g[en[erate]] [DIRECTORY] [...]
+dv t[est] FILENAME
+
+test_server [DIRECTORY]
 ```
 
 ### Publish
@@ -25,8 +28,13 @@ dv g[en[erate]] [DIRECTORY] [...]
 * index.html, archives.html, and archives\_TAG.html (for each content tag present) files will be created from templates, using post data.
 * Generate will use a resources directory for template files during production, but these resources may be packed into the binary after sufficient design.
 
-### Test Server
-This project includes a simple test server to use while designing the page layouts and site structure
+### Test
+* When dv is called with the t flag and a single file, that file will be processed into a single page, ignoring all other content, in order to quickly examine how the final layout of an entry will look.  DV will attempt to open a browser on the generated file using the mac command "open".
+
+dv t expects a folder named css to be in the current directory with the appropriate css files.
+
+## Test Server
+This project includes a simple test server to use while designing the page layouts and site structure.  This server is configured to be run in the parent directory of the generated content file, and a folder containing static content (such as css files) which can be supplied as a commandline argument. 
 
 ### Potential Additions
 * Dynamic JS navigation

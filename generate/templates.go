@@ -12,6 +12,7 @@ var (
 	TMP_MAIN_ARCHIVE = TemplateFromFiles("frame", "main_archive", "titlebar", "link_list")
 	TMP_TAG_ARCHIVE  = TemplateFromFiles("frame", "tag_archive", "titlebar", "link_list")
 	TMP_POST         = TemplateFromFiles("frame", "body", "titlebar", "link_list", "nav_bar")
+	TMP_TEST_POST    = TemplateFromFiles("test_frame", "body", "titlebar", "link_list", "nav_bar")
 )
 
 const (
