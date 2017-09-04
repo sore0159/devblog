@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"io"
 	"path/filepath"
+	"strings"
 	tTemp "text/template"
 )
 
@@ -15,7 +16,7 @@ var (
 	TMP_TAG_ARCHIVE  = TemplateFromFiles("frame", "tag_archive", "titlebar", "link_list")
 	TMP_POST         = TemplateFromFiles("frame", "body", "titlebar", "link_list", "nav_bar")
 	TMP_TEST_POST    = TemplateFromFiles("test_frame", "body", "titlebar", "link_list", "nav_bar")
-	TMP_RSS          = tTemp.Must(tTemp.ParseFiles(filepath.Join(TMP_DIR, "feed.rss")))
+	TMP_RSS          = MakeRSSTemplate()
 )
 
 const (
@@ -32,4 +33,12 @@ func TemplateFromFiles(tmpls ...string) *template.Template {
 
 type Templator interface {
 	ExecuteTemplate(io.Writer, string, interface{}) error
+}
+
+func MakeRSSTemplate() *tTemp.Template {
+	fMap := map[string]interface{}{
+		"toLower": strings.ToLower,
+	}
+	t := tTemp.New("").Funcs(fMap)
+	return tTemp.Must(t.ParseFiles(filepath.Join(TMP_DIR, "feed.rss")))
 }
