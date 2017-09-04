@@ -2,14 +2,16 @@
 <?xml version="1.0"?>
 <rss version="2.0">
   <channel>
-    <title>Eric Sorell Writes Code (RSS Feed)</title>
+    <title>Eric Sorell Writes Code</title>
     <link>https://sore0159.github.io</link>
     <description>A simple RSS Feed for my devblog</description>
     {{ range . }}{{ if not .NoPost -}}
     <item>
             <title>{{ .Title }}</title>
             <link>https://sore0159.github.io/{{ .FileName }}</link>
+            <pubDate>{{ .Published }}</pubDate>
             <description>{{ .Title }} posted on {{ .Published }}.  Tagged: {{ range .ContentTags }}{{ index . 0 }}, {{ end }}</description>
+            <content:encoded><![CDATA[{{ .Content }}]]></content:encoded>
     </item>
     {{ end }}{{ end }}
   </channel>

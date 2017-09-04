@@ -1,5 +1,5 @@
 {{ define "body" }}
-<h1>Archive of all posts</h1>
+<h1>Archive of all posts (<a href="/feed.rss">RSS</a>)</h1>
 <p class="date">Last posted: {{ (index (index .SplitList 0).Posts 0).Published }}</p>
 {{ template "linklist" .SplitList }}
 
