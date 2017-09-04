@@ -25,7 +25,7 @@ test_server [DIRECTORY]
 * Must find a directory named "templates" in the current directory with the needed .html files for post generation.
 * Files will be created in a directory "generated", which will be made if it does not exist.
 * Tags NODATE and NOTITLE will suppress the inclusion of the date and title on the generated page, as well as suppressing the date's in the filename of the generated file.  This is primarily for any needed one-off files to still be written as adjustable .md files.
-* index.html, archives.html, and archives\_TAG.html (for each content tag present) files will be created from templates, using post data.
+* index.html, feed.rss, archives.html, and archives\_TAG.html (for each content tag present) files will be created from templates, using post data.
 * Generate will use a resources directory for template files during production, but these resources may be packed into the binary after sufficient design.
 
 ### Test
@@ -39,5 +39,4 @@ This project includes a simple test server to use while designing the page layou
 ### Potential Additions
 * Dynamic JS navigation
 * Sprucing up archive pages with lines/breaks between months/years.
-* RSS feed generation
 * Configuration files/options
