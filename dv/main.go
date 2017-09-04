@@ -29,7 +29,7 @@ func main() {
 func PrintHelp(w io.Writer) {
 	fmt.Fprint(w,
 		`Usage: 
-	dv [m] [filenames...]              -- renames[/moves] files with timestamp
+	dv [c] [filenames...]              -- renames[/copies] files with timestamp
 	dv t[est] FILENAME                 -- test generation for single file 
 	dv g[en[erate]] [directories...]   -- generates static content
  `)

@@ -19,7 +19,6 @@ func main() {
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
 
 	log.Println("Starting server on port", HTTP_PORT)
-	// Creating my own server var to have access to server.Shutdown()
 	var static_dir string
 	if len(os.Args) > 1 {
 		if fI, err := os.Stat(os.Args[1]); err != nil && fI.IsDir() {
@@ -31,6 +30,7 @@ func main() {
 	} else {
 		static_dir = DEFAULT_STATIC_DIR
 	}
+	// Creating my own server var to have access to server.Shutdown()
 	server := &http.Server{Addr: HTTP_PORT, Handler: MakeMux(static_dir)}
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
@@ -61,13 +61,11 @@ func LogServerErr(str string, args ...interface{}) {
 
 func MakeMux(static_dir string) *http.ServeMux {
 	mux := http.NewServeMux()
-	// const STATIC_DIR = "static"
 	mux.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, static_dir+"/img/yd32.ico")
 	})
 	mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir(static_dir+"/img"))))
 	mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir(static_dir+"/css"))))
-	mux.Handle("/", http.FileServer(http.Dir("generated")))
-	//mux.Handle("/", http.FileServer(http.Dir(STATIC_DIR)))
+	mux.Handle("/", http.FileServer(http.Dir("dv_generated")))
 	return mux
 }

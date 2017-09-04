@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+const GEN_FOLDER_NAME = "dv_generated"
+
 func Gen(w io.Writer, names []string) error {
 	parsed := make([]*ParsedFile, 0, len(names))
 	for _, name := range names {
@@ -53,12 +55,18 @@ func GenFile(fileName string, t Templator, data interface{}) (*GeneratedFile, er
 }
 
 func Write(w io.Writer, data []*GeneratedFile) error {
-	destF := "generated"
+	destF := GEN_FOLDER_NAME
 	if err := os.Mkdir(destF, 0755); err != nil {
 		if !os.IsExist(err) {
 			return fmt.Errorf("folder creation failure: %s", err.Error())
 		} else {
-			fmt.Fprintf(w, "Using existing folder %s\n", destF)
+			fmt.Fprintf(w, "Clearing existing folder %s\n", destF)
+			if err = os.RemoveAll(destF); err != nil {
+				return fmt.Errorf("folder clear failure: %v", err)
+			}
+			if err = os.Mkdir(destF, 0755); err != nil {
+				return fmt.Errorf("folder creation failure: %s", err.Error())
+			}
 		}
 	} else {
 		fmt.Fprintf(w, "Creating folder %s\n", destF)
@@ -97,5 +105,5 @@ func TestGen(w io.Writer, name string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to generate page: %s", err.Error())
 	}
-	return filepath.Join("generated", g.FileName), Write(w, []*GeneratedFile{g})
+	return filepath.Join(GEN_FOLDER_NAME, g.FileName), Write(w, []*GeneratedFile{g})
 }

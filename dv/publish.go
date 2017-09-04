@@ -16,9 +16,9 @@ func DvPublish(w io.Writer, args []string) error {
 	if len(args) == 0 {
 		return errors.New("dv publish requires filename commandline arguments")
 	}
-	cpy := true
-	if args[0] == "m" {
-		cpy = false
+	cpy := false
+	if args[0] == "c" {
+		cpy = true
 		args = args[1:]
 		if len(args) == 0 {
 			return errors.New("dv publish requires filename commandline arguments")
