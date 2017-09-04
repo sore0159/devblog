@@ -15,9 +15,13 @@
 {{ if not .NoPost }}
 <hr class=navbar />
 <div id="navbar">
-{{ range .TagNavs }}
+{{ range $index, $element := .TagNavs }}
+{{ if eq $index 1 }}
+<div id="morenav">&#8650;</div>
+<div id="morenav2">&#8650;</div>
+{{ end }}
 <div class="navbar">
-{{ template "navbar" . }}
+{{ template "navbar" $element }}
 </div>
 {{ end }}
 {{ end }}

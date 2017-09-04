@@ -1,7 +1,7 @@
 {{ define "body" }}
 <h1>Archive of all posts</h1>
-<p class="date">Last posted: {{ (index . 0).Published }}</p>
-{{ template "linklist" . }}
+<p class="date">Last posted: {{ (index (index .SplitList 0).Posts 0).Published }}</p>
+{{ template "linklist" .SplitList }}
 
 {{ end }}
 

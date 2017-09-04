@@ -6,11 +6,36 @@ import (
 )
 
 type ProcessedTaglist struct {
-	FileName string
-	Title    string
-	Tag      string
-	Latest   string
-	Posts    []*ProcessedFile
+	FileName  string
+	Title     string
+	Tag       string
+	Latest    string
+	SplitList []*ListPart
+}
+
+type ListPart struct {
+	Title string
+	Posts []*ProcessedFile
+}
+
+func MakeSplitList(list []*ProcessedFile) []*ListPart {
+	rlist := make([]*ListPart, 0)
+	var title string
+	var lp *ListPart
+	for _, pf := range list {
+		if pf.NoPost {
+			continue
+		}
+		newTitle := pf.PubTime.Format("Jan 2006")
+		if newTitle != title {
+			lp = new(ListPart)
+			rlist = append(rlist, lp)
+			lp.Title = newTitle
+			title = newTitle
+		}
+		lp.Posts = append(lp.Posts, pf)
+	}
+	return rlist
 }
 
 type TagNav struct {
@@ -32,7 +57,7 @@ func ProcessTaglist(tg string, list []*ProcessedFile) *ProcessedTaglist {
 	pTL.Title = fmt.Sprintf("Archive: %s", tg)
 	pTL.Tag = tg
 	pTL.Latest = list[0].PubTime.Format("Jan 2, 2006 (15:04)")
-	pTL.Posts = list
+	pTL.SplitList = MakeSplitList(list)
 	return pTL
 }
 

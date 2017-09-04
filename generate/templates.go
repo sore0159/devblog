@@ -4,7 +4,9 @@ package generate
 
 import (
 	"html/template"
+	"io"
 	"path/filepath"
+	tTemp "text/template"
 )
 
 var (
@@ -13,6 +15,7 @@ var (
 	TMP_TAG_ARCHIVE  = TemplateFromFiles("frame", "tag_archive", "titlebar", "link_list")
 	TMP_POST         = TemplateFromFiles("frame", "body", "titlebar", "link_list", "nav_bar")
 	TMP_TEST_POST    = TemplateFromFiles("test_frame", "body", "titlebar", "link_list", "nav_bar")
+	TMP_RSS          = tTemp.Must(tTemp.ParseFiles(filepath.Join(TMP_DIR, "feed.rss")))
 )
 
 const (
@@ -27,21 +30,6 @@ func TemplateFromFiles(tmpls ...string) *template.Template {
 	return template.Must(template.ParseFiles(tmpls...))
 }
 
-func TemplateFromStrings(tmpls ...string) *template.Template {
-	t := template.New("base")
-	for _, str := range tmpls {
-		if _, err := t.Parse(str); err != nil {
-			panic(err)
-		}
-	}
-	return t
+type Templator interface {
+	ExecuteTemplate(io.Writer, string, interface{}) error
 }
-
-/*
-var (
-	TMP_INDEX        = TemplateFromStrings(t.TMP_FRAME, t.TMP_INDEX, t.TMP_TITLEBAR, t.TMP_LINKLIST)
-	TMP_MAIN_ARCHIVE = TemplateFromStrings(t.TMP_FRAME, t.TMP_MAIN_ARCHIVE, t.TMP_TITLEBAR, t.TMP_LINKLIST)
-	TMP_TAG_ARCHIVE  = TemplateFromStrings(t.TMP_FRAME, t.TMP_TAG_ARCHIVE, t.TMP_TITLEBAR, t.TMP_LINKLIST)
-	TMP_POST         = TemplateFromStrings(t.TMP_FRAME, t.TMP_BODY, t.TMP_TITLEBAR, t.TMP_NAVBAR)
-)
-*/

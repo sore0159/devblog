@@ -30,7 +30,7 @@ func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 	SortByDate(posts)
 
 	data = make([]*GeneratedFile, 0, len(parsed))
-	g, err := GenFile("archives.html", TMP_MAIN_ARCHIVE, processed)
+	g, err := GenFile("archives.html", TMP_MAIN_ARCHIVE, ProcessTaglist("", processed))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create page: %s", err.Error())
 	}
@@ -39,6 +39,12 @@ func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 	g, err = GenFile("index.html", TMP_INDEX, [2]*ProcessedFile{indexP, processed[0]})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create page: %s", err.Error())
+	}
+	data = append(data, g)
+
+	g, err = GenFile("feed.rss", TMP_RSS, posts)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create rss feed: %s", err.Error())
 	}
 	data = append(data, g)
 

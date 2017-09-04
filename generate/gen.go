@@ -3,7 +3,6 @@ package generate
 import (
 	"bytes"
 	"fmt"
-	"html/template"
 	"io"
 	"io/ioutil"
 	"os"
@@ -42,7 +41,7 @@ type GeneratedFile struct {
 	Contents string
 }
 
-func GenFile(fileName string, t *template.Template, data interface{}) (*GeneratedFile, error) {
+func GenFile(fileName string, t Templator, data interface{}) (*GeneratedFile, error) {
 	g := new(GeneratedFile)
 	g.FileName = fileName
 	b := new(bytes.Buffer)

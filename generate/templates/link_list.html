@@ -1,13 +1,15 @@
 {{ define "linklist" }}
 {{ if . }}
-<ul>
-{{ range . }}
-{{ if not .NoPost }}
-<li> {{ template "fulllink" . }} </li>
-
-{{ end }}
-{{ end }}
-</ul>
+        {{ range . }}
+        <h3>{{ .Title }}</h3>
+        <ul>
+                {{ range .Posts }}
+                        {{ if not .NoPost }}
+                        <li> {{ template "fulllink" . }} </li>
+                        {{ end }}
+                {{ end }}
+        </ul>
+        {{ end }}
 {{ end }}
 {{ end }}
 

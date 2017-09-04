@@ -3,7 +3,7 @@
 <p class="date">Tag "{{ .Tag }}" last used: {{ .Latest }}</p>
 <p class="mytags"><a href="/archives.html">Go to full archive</a></p>
 
-{{ template "linklist" .Posts }}
+{{ template "linklist" .SplitList }}
 
 {{ end }}
 
