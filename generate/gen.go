@@ -86,6 +86,12 @@ func Write(w io.Writer, data []*GeneratedFile) error {
 
 func TestGen(w io.Writer, name string) (string, error) {
 	pf, err := ParseFromFile(name)
+	if pf == nil {
+		if err == nil {
+			return "", fmt.Errorf("parsing failed")
+		}
+		return "", fmt.Errorf("parsing failed: %s", err.Error())
+	}
 	pf.Tags = append(pf.Tags, "TESTING")
 	pf.FileName = "TESTING_" + pf.FileName
 	if err != nil {
