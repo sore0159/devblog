@@ -2,11 +2,12 @@ package generate
 
 import (
 	"fmt"
+	"io"
 	"sort"
 	"strings"
 )
 
-func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
+func Expand(w io.Writer, parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 	processed := make([]*ProcessedFile, 0, len(parsed))
 	posts := make([]*ProcessedFile, 0, len(parsed))
 	tags := make(map[string][]*ProcessedFile)
@@ -62,7 +63,7 @@ func Expand(parsed []*ParsedFile) (data []*GeneratedFile, err error) {
 	sort.Strings(tgList)
 	AddTagNavs("", posts)
 	for _, tg := range tgList {
-		fmt.Println("TAG", tg, " LIST ", tags[tg])
+		fmt.Fprintf(w, "TAG %s COUNT: %d\n", tg, len(tags[tg]))
 		AddTagNavs(tg, tags[tg])
 	}
 

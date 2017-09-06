@@ -31,7 +31,7 @@ func Gen(w io.Writer, names []string) error {
 	if len(parsed) == 0 {
 		return fmt.Errorf("no files parsed")
 	}
-	data, err := Expand(parsed)
+	data, err := Expand(w, parsed)
 	if err != nil {
 		return fmt.Errorf("expanding failed: %s", err.Error())
 	}
